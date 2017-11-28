@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-	s.name          = 'rts_api'
+  s.name          = 'rts_api'
   s.version       = '0.1.0'
   s.date          = '2017-11-26'
   s.summary       = "RTS API"
