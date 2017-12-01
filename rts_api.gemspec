@@ -6,7 +6,9 @@ Gem::Specification.new do |s|
   s.description   = "Ready Theatre Systems API library"
   s.authors       = ["Michael Sullivan"]
   s.email         = 'regularmike@gmail.com'
-  s.files         = ["rts_api.rb"]
+  s.files         = Dir["lib/**/*.rb"]
+  s.test_files    = Dir["spec/**/*.rb"]
+  s.require_path  = "lib"
   s.homepage      = 'http://rubygems.org/gems/rts_api'
   s.license       = 'MIT'
 

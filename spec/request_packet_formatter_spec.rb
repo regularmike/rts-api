@@ -14,7 +14,7 @@ module RtsApi
     describe "#performance_schedule" do
       formatter = RequestPacketFormatter.new(1)
 
-      it "should add a Command node with innert text ShowTimeXml" do
+      it "should add a Command node with innert text 'ShowTimeXml'" do
         packet = formatter.performance_schedule      
         expect(packet.at('Command').text).to eql 'ShowTimeXml'
       end
