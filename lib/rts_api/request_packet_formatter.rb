@@ -4,8 +4,8 @@ module RtsApi
 
   class RequestPacketFormatter
     
-    def initialize(rts_version)
-      @rts_version = rts_version
+    def initialize(version)
+      @version = version
     end
 
     def performance_schedule(show_available_tickets = false, show_sales = false, show_sale_links = false)
@@ -20,7 +20,7 @@ module RtsApi
     private
 
       def create_request_stub(command)
-        Nokogiri::XML("<Request><Version>#{@rts_version}</Version><Command>#{command}</Command></Request>")      
+        Nokogiri::XML("<Request><Version>#{@version}</Version><Command>#{command}</Command></Request>")      
       end   
 
   end

@@ -5,17 +5,19 @@ module RtsApi
   
   class Client
 
-    RTS_VERSION = 1
+    # not sure what <Version>1</Version> refers to but it's the first child node in every request packet
+    VERSION = 1
 
     def initialize(options = {})
       @url             = options[:url]                      || 'https://5.formovietickets.com:2235/Data.ASP'
       @username        = options[:username]                 || 'test'
       @password        = options[:password]                 || 'test'           
       @response_format = options[:response_format]          || :nokogiri
-      @formatter       = options[:request_packet_formatter] || RequestPacketFormatter.new(RTS_VERSION)
+      @formatter       = options[:request_packet_formatter] || RequestPacketFormatter.new(VERSION)
     end
 
-    # assume missing methods can be found in the packet formatter
+    # assume missing methods can be found in the packet formatter,    
+    # which is the only thing that cares what API command is sent
     def method_missing(m, *args, &block)
       begin
         xml_doc = @formatter.send(m, *args)
