@@ -1,5 +1,3 @@
-require 'nokogiri'
-
 module RtsApi
 
   class Response
@@ -11,8 +9,8 @@ module RtsApi
       @body = res.body 
     end
 
-    def xml_doc
-      Nokogiri::XML(@body)
+    def packet
+      @packet ||= Nokogiri::XML(@body)
     end
 
   end

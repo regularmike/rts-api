@@ -5,7 +5,8 @@ module RtsApi
   
   class Client
 
-    # not sure what <Version>1</Version> refers to but it's the first child node in every request packet
+    # it's unclear what <Version>1</Version> refers to
+    # but it's the first child node in every request packet
     VERSION = 1
 
     def initialize(options = {})
@@ -16,29 +17,30 @@ module RtsApi
       @formatter       = options[:request_packet_formatter] || RequestPacketFormatter.new(VERSION)
     end
 
-    # assume missing methods can be found in the packet formatter,    
-    # which is the only thing that cares what API command is sent
-    def method_missing(m, *args, &block)
+    # assume missing methods correspond to API "commands" 
+    # and methods of the packet formatter
+    #
+    def method_missing(command, *args, &block)
       begin
-        xml_doc = @formatter.send(m, *args)
+        request_packet = @formatter.send(command, *args)
       rescue
-        raise NoMethodError, "The '#{m}' API command does not exist or is not supported by this library."
+        raise NoMethodError, "The '#{command}' API command does not exist or is not supported by this library."
       end
       
-      get_response(xml_doc)      
+      get_response(request_packet, command)   
     end
 
-    def get_response(xml_doc)
+    def get_response(request_packet, command)
       uri = URI(@url)
       req = Net::HTTP::Post.new(uri)
       req.basic_auth @username, @password
       req.content_type = 'text/xml'
-      req.body = xml_doc.to_s
+      req.body = request_packet.to_s
       res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) do |http|
         http.request(req)
       end
 
-      RtsApi::Response.new(res)
+      RtsApi::ResponseFactory.create(command, res)
     end
 
   end
