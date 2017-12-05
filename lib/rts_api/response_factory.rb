@@ -4,7 +4,8 @@ module RtsApi
 
     def self.create(command, res)
       case command
-        when :performance_schedule then RtsApi::PerformanceSchedule.new(res)
+        when :performance_schedule then PerformanceSchedule.new(res)
+        else Response.new(res)
       end
     end
 

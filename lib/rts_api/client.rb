@@ -1,5 +1,6 @@
 require 'net/http'
 require 'nokogiri'
+require 'logger'
 
 module RtsApi
   
@@ -15,6 +16,9 @@ module RtsApi
       @password        = options[:password]                 || 'test'           
       @response_format = options[:response_format]          || :nokogiri
       @formatter       = options[:request_packet_formatter] || RequestPacketFormatter.new(VERSION)
+      @log             = options[:logger]                   || ::Logger.new(STDERR)
+
+      @log.level       = options[:log_level]                || ::Logger::WARN
     end
 
     # assume missing methods correspond to API "commands" 
@@ -24,7 +28,11 @@ module RtsApi
       begin
         request_packet = @formatter.send(command, *args)
       rescue
-        raise NoMethodError, "The '#{command}' API command does not exist or is not supported by this library."
+        # log an error if the missing method was an attempted API command
+        unless @formatter.respond_to?(command)
+          @log.error("The '#{command}' API command does not exist or is not supported by this library.") 
+        end
+        raise  
       end
       
       get_response(request_packet, command)   
@@ -40,7 +48,7 @@ module RtsApi
         http.request(req)
       end
 
-      RtsApi::ResponseFactory.create(command, res)
+      ResponseFactory.create(command, res)
     end
 
   end
