@@ -3,15 +3,19 @@ module RtsApi
   class PerformanceSchedule < Response
     
     def file_version
-      packet.at('FileVersion').text
+      get_text_node('FileVersion') 
     end
 
     def rts_version
-      packet.at('RtsVersion').text
+      get_text_node('RtsVersion') 
     end
 
     def link_prefix
-      packet.at('LinkPreFix').text
+      get_text_node('LinkPreFix')
+    end
+
+    def tickets
+      get_children_as_array('Tickets')
     end
 
   end
