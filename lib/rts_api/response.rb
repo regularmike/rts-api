@@ -19,15 +19,15 @@ module RtsApi
       begin
         packet.at(element).text
       rescue
-        nil
+        ''        
       end
     end
 
-    def get_children_as_array(element)
+    def get_node_set(element)
       begin
-        ['ticket', 'ticket2']
+        packet.at(element).children
       rescue
-        nil
+        [] 
       end
     end
 

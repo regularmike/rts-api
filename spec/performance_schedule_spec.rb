@@ -22,33 +22,29 @@ module RtsApi
 
     it "can return an array of tickets" do
       tickets = @performance_schedule.tickets
-      expect(tickets).to be_an_instance_of(Array)
+      expect(tickets[0].code.length).to be > 0 
+    end
+
+    it "can return an array of films" do
+      films = @performance_schedule.films
+      expect(films[0].title.length).to be > 0
     end
 
     before(:each) do
       res = double("res", :code => 200, :body => 
-        '<Response>
-          <ShowSchedule>
-            <FileVersion>1.1</FileVersion>
-            <RtsVersion>7.0.7238.0</RtsVersion>
-            <LinkPreFix>https://www.readyticket.net/webticket/webticket2.aspWCI=BuyTicket&WCI=</LinkPrefix>
-            <Tickets>
-              <Ticket>
-                <Code>1</Code>
-                <Name>Adult</Name>
-                <Price>7.5</Price>
-                <Tax>.5</Tax>
-              </Ticket>
-              <Ticket>
-                <Code>2</Code>
-                <Name>Child</Name>
-                <Price>7</Price>
-                <Tax>.43</Tax>
-              </Ticket>
-            </Tickets>
-          </ShowSchedule>
-         </Response>')
-      @performance_schedule = PerformanceSchedule.new(res)
+        <<~XML
+          <Response>
+            <ShowSchedule>
+              <FileVersion>1.1</FileVersion>
+              <RtsVersion>7.0.7238.0</RtsVersion>
+              <LinkPreFix>https://www.readyticket.net/webticket/webticket2.aspWCI=BuyTicket&WCI=</LinkPreFix>
+              <Tickets><Ticket><Code>1</Code><Name>Adult</Name><Price>7.5</Price><Tax>.5</Tax></Ticket><Ticket><Code>2</Code><Name>Child</Name><Price>7</Price><Tax>.43</Tax></Ticket></Tickets>
+              <Films><Film><Title>+21 STRANGE TITLE</Title><TitleShort>+21 STRANGE TITLE</TitleShort><Length>120</Length><Rating>NC17</Rating><WebSite>http://www.rts-solutions.com</WebSite><FilmCode>+24230</FilmCode><MtFilmCode></MtFilmCode><Shows><Show><DT>200811261235</DT><Aud>1</Aud><ID>+24230|200811261235|1</ID><SaleLink>%2B21+STRANGE+TITLE,112620081235,1,5,NC17</SaleLink><RE>225</RE><Sold>22</Sold><SO>0</SO><LI>0</LI><TIs><TI><C>1|1</C></TI><TI><C>1|2</C></TI></TIs></Show></Shows></Film></Films>
+            </ShowSchedule>
+           </Response>
+         XML
+      )
+      @performance_schedule = ResponseFactory.create(:performance_schedule, res)
     end
     
   end
