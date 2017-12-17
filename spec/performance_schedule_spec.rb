@@ -37,8 +37,17 @@ module RtsApi
       films = performance_schedule.films
       expect(films[0]).to be_an_instance_of(Film)
     end
+   
+    it "can set an array of shows for each film" do
+      films = performance_schedule.films
+      expect(films[0].shows[0]).to be_an_instance_of(Show)
+    end
+   
+    it "can set an array of ticket codes for each show" do
+      films = performance_schedule.films
+      expect(films[0].shows[0].ticket_type_codes).to be_an_instance_of(Array)
+    end
 
-    
   end
 
 end

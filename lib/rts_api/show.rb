@@ -4,6 +4,8 @@ module RtsApi
     
     attr_reader :datetime, :auditorium, :performance_id, :sale_link, :seats_remaining, :seats_sold, :sold_out, :low_seats, :ticket_type_codes
 
+    include XmlReader
+
     def initialize(attrs)
       @datetime           = attrs[:datetime]
       @auditorium         = attrs[:auditorium]

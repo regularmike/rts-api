@@ -3,6 +3,8 @@ module RtsApi
   class Film
 
     attr_reader :title, :title_short, :length, :rating, :website, :film_code, :mt_film_code, :shows
+
+    include XmlReader
     
     def initialize(attrs)
       @title        = attrs[:title]
