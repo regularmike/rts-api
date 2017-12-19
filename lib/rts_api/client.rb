@@ -14,7 +14,6 @@ module RtsApi
       @url             = options[:url]                      || 'https://5.formovietickets.com:2235/Data.ASP'
       @username        = options[:username]                 || 'test'
       @password        = options[:password]                 || 'test'           
-      @response_format = options[:response_format]          || :nokogiri
       @formatter       = options[:request_packet_formatter] || RequestPacketFormatter.new(VERSION)
       @log             = options[:logger]                   || ::Logger.new(STDERR)
 
