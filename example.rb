@@ -1,5 +1,5 @@
 require './lib/rts_api.rb'
 
 rts = RtsApi::Client.new
-puts rts.performance_schedule(false, false, false).packet.to_s
+puts rts.performance_schedule(true, true, true).link_prefix
 
