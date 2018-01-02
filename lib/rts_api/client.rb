@@ -26,7 +26,7 @@ module RtsApi
     def method_missing(command, *args, &block)
       begin
         request_packet = @formatter.send(command, *args)
-      rescue
+      rescue NoMethodError
         # log an error if the missing method was an attempted API command
         unless @formatter.respond_to?(command)
           @log.error("The '#{command}' API command does not exist or is not supported by this library.") 
