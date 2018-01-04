@@ -15,9 +15,11 @@ module RtsApi
       @username        = options[:username]                 || 'test'
       @password        = options[:password]                 || 'test'           
       @formatter       = options[:request_packet_formatter] || RequestPacketFormatter.new(VERSION)
-      @log             = options[:logger]                   || ::Logger.new(STDERR)
-
-      @log.level       = options[:log_level]                || ::Logger::WARN
+      @logger          = options[:logger]
+      unless @logger
+        @logger = ::Logger.new STDOUT
+        @logger.level = ::Logger::WARN
+      end
     end
 
     # assume missing methods correspond to API "commands" 
@@ -34,6 +36,7 @@ module RtsApi
         raise  
       end
       
+      @logger.info("Preparing to send the following request packet:\n #{request_packet}")
       get_response(request_packet, command)   
     end
 
