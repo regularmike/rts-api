@@ -10,12 +10,18 @@ module RtsApi
     # but it's the first child node in every request packet
     VERSION = 1
 
-    def initialize(options = {})
-      @url             = options[:url]                      || 'https://5.formovietickets.com:2235/Data.ASP'
-      @username        = options[:username]                 || 'test'
-      @password        = options[:password]                 || 'test'           
-      @formatter       = options[:request_packet_formatter] || RequestPacketFormatter.new(VERSION)
-      @logger          = options[:logger]
+    def initialize(
+      url: 'https://5.formovietickets.com:2235/Data.ASP',
+      username: 'test',
+      password: 'test',
+      formatter: RequestPacketFormatter.new(VERSION),
+      logger: nil)
+
+      @url = url
+      @username = username
+      @password = password
+      @formatter = formatter       
+      @logger = logger
       unless @logger
         @logger = ::Logger.new STDOUT
         @logger.level = ::Logger::WARN
