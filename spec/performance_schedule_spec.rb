@@ -1,7 +1,6 @@
 require_relative '../lib/rts_api.rb'
 
 module RtsApi
-    
   describe PerformanceSchedule do
 
     before :all do
@@ -47,7 +46,5 @@ module RtsApi
       films = performance_schedule.films
       expect(films[0].shows[0].ticket_type_codes[0]).to be == '1|1'
     end
-
   end
-
 end

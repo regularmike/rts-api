@@ -1,7 +1,6 @@
 require_relative '../lib/rts_api/request_packet_formatter.rb'
 
 module RtsApi
-
   describe RequestPacketFormatter do
 
     it "includes the requested version number" do
@@ -19,26 +18,23 @@ module RtsApi
         expect(packet.at('Command').text).to eql 'ShowTimeXml'
       end
 
-      it "includes a ShowAvalTickets node when first parameter is true" do
-        packet = formatter.performance_schedule(true)
+      it "includes a ShowAvalTickets node when show_available_tickets is true" do
+        packet = formatter.performance_schedule(show_available_tickets: true)
         expect(packet.at('ShowAvalTickets')).to_not be_nil
         expect(packet.at('ShowAvalTickets').text).to eql '1'
       end
       
-      it "includes a ShowSales node when second parameter is true" do
-        packet = formatter.performance_schedule(false, true)
+      it "includes a ShowSales node when show_sales is true" do
+        packet = formatter.performance_schedule(show_sales: true)
         expect(packet.at('ShowSales')).to_not be_nil
         expect(packet.at('ShowSales').text).to eql '1'
       end
 
-      it "includes a ShowSaleLinks node when third parameter is true" do
-        packet = formatter.performance_schedule(false, false, true)
+      it "includes a ShowSaleLinks node when show_sale_links is true" do
+        packet = formatter.performance_schedule(show_sale_links: true)
         expect(packet.at('ShowSaleLinks')).to_not be_nil
         expect(packet.at('ShowSaleLinks').text).to eql '1'
       end
-
     end
-
   end
-
 end

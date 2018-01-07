@@ -1,7 +1,5 @@
 module RtsApi
-
   class Response
-
     attr_reader :code, :body
 
     include XmlReader
@@ -14,8 +12,6 @@ module RtsApi
     def packet
       @packet ||= Nokogiri::XML(@body)
     end
-
   end
-
 end
 

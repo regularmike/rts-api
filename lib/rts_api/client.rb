@@ -3,9 +3,7 @@ require 'nokogiri'
 require 'logger'
 
 module RtsApi
-  
   class Client
-
     # it's unclear what <Version>1</Version> refers to
     # but it's the first child node in every request packet
     VERSION = 1
@@ -34,6 +32,7 @@ module RtsApi
     def method_missing(command, *args, &block)
       begin
         request_packet = @formatter.send(command, *args)
+        request = Request.new(request_packet, command)
       rescue NoMethodError
         # log an error if the missing method was an attempted API command
         unless @formatter.respond_to?(command)
@@ -42,23 +41,35 @@ module RtsApi
         raise  
       end
       
-      @logger.info("Preparing to send the following request packet:\n #{request_packet}")
-      get_response(request_packet, command)   
+      get_response_with_logging(request)
     end
 
-    def get_response(request_packet, command)
+    private
+
+    def get_response(request)
       uri = URI(@url)
       req = Net::HTTP::Post.new(uri)
       req.basic_auth @username, @password
       req.content_type = 'text/xml'
-      req.body = request_packet.to_s
+      req.body = request.packet.to_s
       res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) do |http|
         http.request(req)
       end
 
-      ResponseFactory.create(command, res)
+      ResponseFactory.create(request.command, res)
     end
 
+    def get_response_with_logging(request)
+      @logger.info("Sending #{request.command} command.")
+      @logger.debug("Request packet:\n #{request.packet}")
+      begin
+        response = get_response(request) 
+        @logger.info("Response code: #{response.code}")
+        @logger.debug("Response:\n #{response.packet}")
+      rescue StandardError => error
+        @logger.error(error)
+      end
+      response
+    end
   end
-
 end

@@ -1,7 +1,5 @@
 module RtsApi
-
   class PerformanceSchedule < Response
-    
     def file_version
       get_text_node('FileVersion') 
     end
@@ -16,18 +14,18 @@ module RtsApi
 
     def tickets
       get_node_set('Tickets').map do |ticket|
-        Ticket.new({
+        Ticket.new(
           code:   get_text_node('Code', ticket), 
           name:   get_text_node('Name', ticket),
           price:  get_text_node('Price', ticket),
           tax:    get_text_node('Tax', ticket)
-        })
+        )
       end
     end
 
     def films
       get_node_set('Films').map do |film|
-        Film.new({
+        Film.new(
           title:        get_text_node('Title', film),
           title_short:  get_text_node('TitleShort', film),
           length:       get_text_node('Length', film),
@@ -36,7 +34,7 @@ module RtsApi
           film_code:    get_text_node('FilmCode', film),
           mt_film_code: get_text_node('MtFilmCode', film),
           shows:        get_shows_from_film(film)
-        })  
+        )  
       end
     end
 
@@ -44,17 +42,17 @@ module RtsApi
 
     def get_shows_from_film(film)
       get_node_set('Shows').map do |show|
-        Show.new({
+        Show.new(
           datetime:           get_text_node('DT', show),
           auditorium:         get_text_node('Aud', show),
           performance_id:     get_text_node('ID', show),
           sale_link:          get_text_node('Link', show),
           seats_remaining:    get_text_node('RE', show),
           seats_sold:         get_text_node('Sold', show),
-          sold_out?:          get_text_node('SO', show) == '1',
-          low_seats?:         get_text_node('LI', show) == '1',
+          sold_out:           get_text_node('SO', show) == '1',
+          low_seats:          get_text_node('LI', show) == '1',
           ticket_type_codes:  get_ticket_type_codes_from_show(show)
-        })
+        )
       end
     end
 
@@ -63,7 +61,5 @@ module RtsApi
         ti.at('C').text
       end
     end
-
   end
-
 end

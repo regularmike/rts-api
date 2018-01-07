@@ -1,7 +1,5 @@
 module RtsApi
-
   module XmlReader
-
     def get_text_node(element, packet = self.packet)
       begin
         packet.at(element).text
@@ -17,7 +15,5 @@ module RtsApi
         [] 
       end
     end
-
   end
- 
 end
