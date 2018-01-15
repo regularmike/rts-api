@@ -1,2 +1,2 @@
-# rts-api
-Ready Theatre Systems API library for Ruby
+# rts_api
+Ready Theatre Systems API wrapper for Ruby
