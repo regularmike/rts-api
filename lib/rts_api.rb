@@ -10,4 +10,5 @@ module RtsApi
   require_relative 'rts_api/ticket.rb'
   require_relative 'rts_api/film.rb'
   require_relative 'rts_api/show.rb'
+  require_relative 'rts_api/errors.rb'
 end

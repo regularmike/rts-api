@@ -64,7 +64,7 @@ module RtsApi
       @logger.debug("Request packet:\n #{request.packet}")
       begin
         response = get_response(request) 
-        @logger.info("Response code: #{response.code}")
+        @logger.info("Response HTTP status code: #{response.http_status_code}")
         @logger.debug("Response:\n #{response.packet}")
       rescue StandardError => error
         @logger.error(error)
