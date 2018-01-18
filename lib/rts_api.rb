@@ -7,8 +7,8 @@ module RtsApi
   require_relative 'rts_api/response_factory.rb'
   
   require_relative 'rts_api/performance_schedule.rb'
+  require_relative 'rts_api/gift_loyalty_card_information.rb'
   require_relative 'rts_api/ticket.rb'
   require_relative 'rts_api/film.rb'
   require_relative 'rts_api/show.rb'
-  require_relative 'rts_api/errors.rb'
 end

@@ -26,8 +26,8 @@ module RtsApi
       end
     end
 
-    # assume missing methods correspond to API "commands" 
-    # and methods of the packet formatter
+    # assume missing methods correspond to API "commands",
+    # which should have corresponding methods in the packet formatter
     #
     def method_missing(command, *args, &block)
       begin
@@ -36,12 +36,15 @@ module RtsApi
       rescue NoMethodError
         # log an error if the missing method was an attempted API command
         unless @formatter.respond_to?(command)
-          @log.error("The '#{command}' API command does not exist or is not supported by this library.") 
+          @logger.error("The '#{command}' API command does not exist or is not supported by this library.") 
         end
-        raise  
+
+        super
       end
       
-      get_response_with_logging(request)
+      res = get_response_with_logging(request)
+      yield res if block_given?
+      res
     end
 
     private

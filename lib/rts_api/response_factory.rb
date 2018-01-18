@@ -3,6 +3,7 @@ module RtsApi
     def self.create(command, res)
       case command
       when :performance_schedule then PerformanceSchedule.new(res)
+      when :gift_loyalty_card_information then GiftLoyaltyCardInformation.new(res)
       else Response.new(res)
       end
     end
