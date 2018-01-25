@@ -1,5 +1,5 @@
 module RtsApi
-  module XmlReader
+  module XMLReader
     def get_text_node(element, packet = self.packet)
       begin
         packet.at(element).text

@@ -2,7 +2,7 @@ module RtsApi
   class Response
     attr_reader :http_status_code, :body
 
-    include XmlReader
+    include XMLReader
     
     def initialize(res)
       @http_status_code = res.code

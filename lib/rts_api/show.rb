@@ -1,10 +1,16 @@
 module RtsApi
   class Show
+
+    Show = Struct.new(:datetime, :auditorium, :performance_id, :sale_link,
+                :seats_remaining, :seats_sold, :sold_out, :low_seats,
+                :ticket_type_codes)
+
+
     attr_reader :datetime, :auditorium, :performance_id, :sale_link,
                 :seats_remaining, :seats_sold, :sold_out, :low_seats,
                 :ticket_type_codes
 
-    include XmlReader
+    include XMLReader
 
     def initialize(datetime:, auditorium:, performance_id:, sale_link:,
                    seats_remaining:, seats_sold:, sold_out:, low_seats:,

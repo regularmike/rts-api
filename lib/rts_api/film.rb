@@ -1,10 +1,12 @@
 module RtsApi
   class Film
+
+   Film = Struct.new(:title, :title_short, :length, :rating, :website,
+                      :film_code, :mt_film_code, :shows)
+
     attr_reader :title, :title_short, :length, :rating, :website, :film_code,
                 :mt_film_code, :shows
 
-    include XmlReader
-    
     def initialize(title:, title_short:, length:, rating:, website:,
                    film_code:, mt_film_code:, shows:)
       @title        = title
