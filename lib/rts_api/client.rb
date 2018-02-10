@@ -10,6 +10,8 @@ module RtsApi
     # but it's the first child node in every request packet
     VERSION = 1
 
+    Request = Struct.new(:packet, :command)
+
     def initialize(
       url: 'https://5.formovietickets.com:2235/Data.ASP',
       username: 'test',
@@ -17,7 +19,6 @@ module RtsApi
       formatter: RequestPacketFormatter.new(VERSION),
       logger: nil
     )
-
       @url = url
       @username = username
       @password = password
@@ -30,7 +31,6 @@ module RtsApi
 
     # assume missing methods correspond to API "commands",
     # which should have corresponding methods in the packet formatter
-    #
     def method_missing(command, *args)
       return super unless respond_to_missing?(command)
       request_packet = @formatter.send(command, *args)
@@ -41,10 +41,7 @@ module RtsApi
     end
 
     def respond_to_missing?(method, include_private = false)
-      %w[
-        performance_schedule
-        gift_loyalty_card_information
-      ].include?(method.to_s) || super
+      @formatter.methods.include?(method) || super
     end
 
     private
