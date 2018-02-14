@@ -1,6 +1,6 @@
 module RtsApi
+  # Response subclass for working with a performance schedule response from RTS
   class PerformanceSchedule < Response
-
     Ticket = Struct.new(:code, :name, :price, :tax)
 
     Film = Struct.new(:title, :title_short, :length, :rating, :website,
@@ -11,63 +11,51 @@ module RtsApi
                       :ticket_type_codes)
 
     def file_version
-      get_text_node('FileVersion') 
+      text_node('FileVersion')
     end
 
     def rts_version
-      get_text_node('RtsVersion') 
+      text_node('RtsVersion')
     end
 
     def link_prefix
-      get_text_node('LinkPreFix')
+      text_node('LinkPreFix')
     end
 
     def tickets
-      get_node_set('Tickets').map do |ticket|
+      node_set('Tickets').map do |ticket|
         Ticket.new(
-          get_text_node('Code', ticket), 
-          get_text_node('Name', ticket),
-          get_text_node('Price', ticket),
-          get_text_node('Tax', ticket)
+          text_node('Code', ticket),
+          text_node('Name', ticket),
+          text_node('Price', ticket),
+          text_node('Tax', ticket)
         )
       end
     end
 
     def films
-      get_node_set('Films').map do |film|
-        Film.new(
-          get_text_node('Title', film),
-          get_text_node('TitleShort', film),
-          get_text_node('Length', film),
-          get_text_node('Rating', film),
-          get_text_node('WebSite', film),
-          get_text_node('FilmCode', film),
-          get_text_node('MtFilmCode', film),
-          get_shows_from_film(film)
-        )  
+      node_set('Films').map do |film|
+        Film.new(text_node('Title', film), text_node('TitleShort', film),
+                 text_node('Length', film), text_node('Rating', film),
+                 text_node('WebSite', film), text_node('FilmCode', film),
+                 text_node('MtFilmCode', film), shows_from_film(film))
       end
     end
 
     private
 
-    def get_shows_from_film(film)
-      get_node_set('Shows').map do |show|
-        Show.new(
-          get_text_node('DT', show),
-          get_text_node('Aud', show),
-          get_text_node('ID', show),
-          get_text_node('Link', show),
-          get_text_node('RE', show),
-          get_text_node('Sold', show),
-          get_text_node('SO', show) == '1',
-          get_text_node('LI', show) == '1',
-          get_ticket_type_codes_from_show(show)
-        )
+    def shows_from_film(film)
+      node_set('Shows', film).map do |show|
+        Show.new(text_node('DT', show), text_node('Aud', show),
+                 text_node('ID', show), text_node('Link', show),
+                 text_node('RE', show), text_node('Sold', show),
+                 text_node('SO', show) == '1', text_node('LI', show) == '1',
+                 ticket_type_codes_from_show(show))
       end
     end
 
-    def get_ticket_type_codes_from_show(show)
-      get_node_set('TIs').map do |ti|
+    def ticket_type_codes_from_show(show)
+      node_set('TIs', show).map do |ti|
         ti.at('C').text
       end
     end

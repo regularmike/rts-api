@@ -18,8 +18,8 @@ module RtsApi
         expect(packet.at('Command').text).to eql 'ShowTimeXml'
       end
 
-      it "includes a ShowAvalTickets node when show_available_tickets is true" do
-        packet = formatter.performance_schedule(show_available_tickets: true)
+      it "includes a ShowAvalTickets node when show_aval_tickets is true" do
+        packet = formatter.performance_schedule(show_aval_tickets: true)
         expect(packet.at('ShowAvalTickets')).to_not be_nil
         expect(packet.at('ShowAvalTickets').text).to eql '1'
       end

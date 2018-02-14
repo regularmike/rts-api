@@ -15,11 +15,11 @@ module RtsApi
     end
 
     def rts_response_code
-      get_text_node('Code').to_i
+      text_node('Code').to_i
     end
 
     def error_description
-      get_text_node('ErrorText') if rts_response_code > 0
+      text_node('ErrorText') if rts_response_code > 0
     end
   end
 end

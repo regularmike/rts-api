@@ -1,7 +1,9 @@
 module RtsApi
+  # Response subclass for working with an RTS
+  # gift card/loyalty card information response packet
   class GiftLoyaltyCardInformation < Response
     def debit_remain
-      get_text_node('DebitRemain').to_f
+      text_node('DebitRemain').to_f
     end
   end
 end
