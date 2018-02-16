@@ -4,7 +4,7 @@ module RtsApi
   describe PerformanceSchedule do
 
     before :all do
-      @body = File.read("#{__dir__}/sample_responses/performance_schedule.rb")
+      @body = File.read("#{__dir__}/sample_responses/performance_schedule.xml")
     end
       
     let(:performance_schedule) do
