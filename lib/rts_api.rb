@@ -9,4 +9,5 @@ module RtsApi
   # Response classes corresponding to each available command
   require_relative 'rts_api/performance_schedule.rb'
   require_relative 'rts_api/gift_loyalty_card_information.rb'
+  require_relative 'rts_api/gift_card_purchase.rb'
 end

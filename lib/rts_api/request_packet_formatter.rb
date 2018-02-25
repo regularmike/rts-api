@@ -20,6 +20,14 @@ module RtsApi
       xml_doc
     end
 
+    def gift_card_loyalty_card_information(card_number)
+      xml_doc = create_request_stub('GiftInformation')
+      req = xml_doc.at('Request')
+      req.add_child("<Data><Packet><GiftCards><GiftCard>#{card_number}" \
+                    "</GiftCard></GiftCards></Packet></Data>")
+      xml_doc
+    end
+
     private
 
     def create_request_stub(command)

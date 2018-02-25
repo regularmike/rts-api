@@ -33,8 +33,21 @@ module RtsApi
       expect(registered_info.postal).to eq '11111'
     end
 
-    it "can return ticket credits"
+    it "can return ticket credits" do
+      ticket_credits = gift_loyalty_card_information.ticket_credits
+      expect(ticket_credits[0].amount).to be == 1
+      expect(ticket_credits[0].expiration).to be == 'None'
+      expect(ticket_credits[1].start_date).to be == '20130405000000'
+      expect(ticket_credits[1].title_restriction).to be == 'WORLD WAR Z'
+      expect(ticket_credits[1].ticket_restriction).to be == ''
+    end
 
-    it "can return item credits"
+    it "can return item credits" do
+      item_credits = gift_loyalty_card_information.item_credits
+      expect(item_credits[0].expiration).to be == 'None'
+      expect(item_credits[0].start_date).to be == '20130426000000'
+      expect(item_credits[0].amount).to be == 1
+      expect(item_credits[0].item).to be == 'SM POPCORN'
+    end
   end
 end

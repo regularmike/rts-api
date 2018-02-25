@@ -36,5 +36,14 @@ module RtsApi
         expect(packet.at('ShowSaleLinks').text).to eql '1'
       end
     end
+
+    describe "#gift_card_loyalty_card_information" do
+      formatter = RequestPacketFormatter.new(1)
+
+      it "includes the requested gift card number" do
+        packet = formatter.gift_card_loyalty_card_information('123456')
+        expect(packet.at('GiftCard').text).to eql '123456'
+      end
+    end
   end
 end
