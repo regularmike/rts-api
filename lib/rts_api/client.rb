@@ -29,10 +29,11 @@ module RtsApi
       @logger.level = ::Logger::WARN
     end
 
-    # assume missing methods correspond to API "commands",
-    # which should have corresponding methods in the packet formatter
-    def method_missing(command, *args)
-      return super unless respond_to_missing?(command)
+    # send a request to the server
+    # This method should not be called directly but by an alias
+    # that corresponds to an API command
+    def make_request(*args)
+      command = __callee__
       request_packet = @formatter.send(command, *args)
       request = Request.new(request_packet, command)
       res = get_response_with_logging(request)
@@ -40,9 +41,10 @@ module RtsApi
       res
     end
 
-    def respond_to_missing?(method, include_private = false)
-      @formatter.methods.include?(method) || super
-    end
+    %i[
+      performance_schedule
+      gift_card_loyalty_card_information
+    ].each { |command| alias_method command, :make_request }
 
     private
 
