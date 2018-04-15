@@ -4,9 +4,14 @@ require 'logger'
 logger = Logger.new STDOUT
 logger.level = Logger::INFO
 rts = RtsApi::Client.new(logger: logger) 
+card = CreditCard.new(
+  number: '5499990123456781',
+  expiration: '0513',
+  avs_street: '4 Main St',
+  avs_postal: '30329',
+  cid: '123',
+  name_on_card: 'John Doe'
+)
 #rts = RtsApi::Client.new
-rest = rts.performance_schedule(show_aval_tickets: true, show_sales: true,
-                              show_sale_links: true) do |res|
-  puts res.tickets
-end
+res = rts.gift_card_purchase(amount: 25, card: card)
 

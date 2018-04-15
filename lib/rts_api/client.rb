@@ -44,6 +44,7 @@ module RtsApi
     %i[
       performance_schedule
       gift_card_loyalty_card_information
+      purchase_gift_card
     ].each { |command| alias_method command, :make_request }
 
     private

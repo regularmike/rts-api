@@ -1,4 +1,5 @@
 require_relative '../lib/rts_api/request_packet_formatter.rb'
+require_relative '../lib/rts_api/credit_card.rb'
 
 module RtsApi
   describe RequestPacketFormatter do
@@ -43,6 +44,23 @@ module RtsApi
       it "includes the requested gift card number" do
         packet = formatter.gift_card_loyalty_card_information('123456')
         expect(packet.at('GiftCard').text).to eql '123456'
+      end
+    end
+
+    describe "#gift_card_purchase" do
+      formatter = RequestPacketFormatter.new(1)
+      card = CreditCard.new(
+        number: '5499990123456781',
+        expiration: '0513',
+        avs_street: '4 Main St',
+        avs_postal: '30329',
+        cid: '123',
+        name_on_card: 'John Doe'
+      )
+      packet = formatter.gift_card_purchase(amount: 25, card: card)
+
+      it "includes an amount element" do
+        expect(packet.at('Amount').text).to eql '25'
       end
     end
   end

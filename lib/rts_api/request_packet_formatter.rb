@@ -28,6 +28,16 @@ module RtsApi
       xml_doc
     end
 
+    def gift_card_purchase(amount:, card:)
+      xml_doc = create_request_stub('Buy')
+      req = xml_doc.at('Request')
+      req.add_child("<Data><Packet><PurchaseGifts><PurchaseGift><Amount>"\
+                    "#{amount}</Amount></PurchaseGift></PurchaseGifts>"\
+                    "<Payments>#{card.to_payment_xml_doc(amount)}</Payments></Packet>"\
+                    "</Data>")
+      xml_doc
+    end
+
     private
 
     def create_request_stub(command)
