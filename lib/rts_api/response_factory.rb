@@ -7,6 +7,8 @@ module RtsApi
         then PerformanceSchedule.new(res)
       when :gift_loyalty_card_information
         then GiftLoyaltyCardInformation.new(res)
+      when :gift_card_purchase
+        then GiftCardPurchase.new(res)
       else Response.new(res)
       end
     end

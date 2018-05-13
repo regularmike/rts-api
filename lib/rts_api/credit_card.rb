@@ -16,18 +16,18 @@ module RtsApi
     end
 
     def to_payment_xml_doc(charge_amount)
-      Nokogiri::XML(
-        '<Payment>' \
-          '<Type>CreditCard</Type>' \
-          "<Number>#{@number}</number>" \
-          "<Expiration>#{@expiration}</Expiration>" \
-          "<AvsStreet>#{@avs_street}</AvsStreet>" \
-          "<AvsPostal>#{@avs_postal}</AvsPostal>" \
-          "<CID>#{@cid}</CID>" \
-          "<NameOnCard>#{@name_on_card}</NameOnCard>" \
-          "<ChargeAmount>#{charge_amount}</ChargeAmount>" \
-        '</Payment>'
-      ).at('Payment').to_s
+      Nokogiri::XML::Builder.new do |xml|
+        xml.Payment {
+          xml.Type 'CreditCard'
+          xml.Number @number
+          xml.Expiration @expiration
+          xml.AvsStreet @avs_street
+          xml.AvsPostal @avs_postal
+          xml.CID @cid
+          xml.NameOnCard @name_on_card
+          xml.ChargeAmount charge_amount
+        }
+      end.doc.root
     end
   end
 end

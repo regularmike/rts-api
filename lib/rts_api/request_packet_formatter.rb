@@ -23,30 +23,48 @@ module RtsApi
     def gift_card_loyalty_card_information(card_number)
       xml_doc = create_request_stub('GiftInformation')
       req = xml_doc.at('Request')
-      req.add_child("<Data><Packet><GiftCards><GiftCard>#{card_number}" \
-                    "</GiftCard></GiftCards></Packet></Data>")
+      data = Nokogiri::XML::Builder.new do |xml|
+        xml.Data {
+          xml.Packet {
+            xml.GiftCards {
+              xml.GiftCard card_number
+            }
+          }
+        }
+      end.doc.root.to_s
+      req.add_child(data)
       xml_doc
     end
 
     def gift_card_purchase(amount:, card:)
       xml_doc = create_request_stub('Buy')
       req = xml_doc.at('Request')
-      req.add_child("<Data><Packet><PurchaseGifts><PurchaseGift><Amount>"\
-                    "#{amount}</Amount></PurchaseGift></PurchaseGifts>"\
-                    "<Payments>#{card.to_payment_xml_doc(amount)}</Payments></Packet>"\
-                    "</Data>")
+      data = Nokogiri::XML::Builder.new do |xml|
+        xml.Data {
+          xml.Packet {
+            xml.PurchaseGifts {
+              xml.PurchaseGift {
+                xml.Amount amount
+              }
+            }
+            xml.Payments
+          }
+        }
+      end.doc.root
+      data.at('Payments').add_child(card.to_payment_xml_doc(amount))
+      req.add_child(data.to_xml)
       xml_doc
     end
 
     private
 
     def create_request_stub(command)
-      Nokogiri::XML(
-        '<Request>' \
-          "<Version>#{@version}</Version>" \
-          "<Command>#{command}</Command>" \
-        '</Request>'
-      )
+      Nokogiri::XML::Builder.new do |xml|
+        xml.Request do 
+          xml.Version @version
+          xml.Command command
+        end 
+      end.doc
     end
   end
 end
